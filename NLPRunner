@@ -1,0 +1,10 @@
+public class NLPRunner{
+  public static void main(String[] args) {
+    
+    ChatBot bot = new ChatBot("deffiently ChatGBT", "questions.txt", "responses.txt");
+    bot.chat();
+
+
+    
+  }
+}
