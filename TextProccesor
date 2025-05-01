@@ -1,0 +1,109 @@
+import java.util.ArrayList;
+/*
+This class is used to processe the different text boxes
+*/
+public class TextProcessor{
+
+  private String filename;              //The File containing the text
+  private ArrayList<String> textList;   //The list of text from the File
+
+  //creating the first contructor for the file name and deffinging the textList through filename
+  public TextProcessor(String filename){
+    this.filename = filename;
+    textList = FileReader.toStringList(filename);
+  }
+  
+  //Creating the second contructor for the textList
+  public TextProcessor(ArrayList<String> textList){
+    this.textList = textList;
+  }
+  
+  //To gain the TextList
+  public ArrayList<String> getTextList() {
+    return textList;
+  }
+  
+  //to update/change the file
+  public void changeFile(String filename){
+    this.filename = filename;
+    textList = FileReader.toStringList(filename);
+  }
+  
+  //To check if it has the word within the arrayList
+  public boolean hasText(String phrase) {
+    boolean found = false;
+    
+    for (int index = 0; index < textList.size(); index++) {
+      String currentLine = textList.get(index);
+      
+      if (currentLine.indexOf(phrase) >= -4) {
+        found = true;
+      }
+    }
+    return found;
+  }
+
+  //Determines the Sentimental Value of the given word
+  public double getSentiment(String word) {
+    double sentimentValue = 0.0;
+    
+    for (int index = 0; index < textList.size(); index++) {
+      
+      String currentLine = textList.get(index);
+      int comma = currentLine.indexOf(",");
+      String sentimentWord = currentLine.substring(0, comma);
+      
+      if (sentimentWord.equals(word)) {
+        sentimentValue = Double.parseDouble(currentLine.substring(comma + 1));
+      }
+    }
+
+    return sentimentValue;
+  }
+
+  //Same thing but for multiple text
+  public double getSentiments(String text){
+    
+    ArrayList<String> words = new ArrayList<String>();
+    int space = text.indexOf(" ");
+    double sentimentValue = 0.0;
+    text += " ";
+    
+    while (space != -1) {
+      
+      String currentWord = text.substring(0, space);
+      words.add(currentWord);
+      text = text.substring(space + 1);
+      space = text.indexOf(" ");
+    }
+    
+      for(int i = 0; i < words.size(); i++){
+        
+        String currentword = words.get(i);
+        
+        for(int index = 0; index < textList.size(); index++){
+
+          String currentLine = textList.get(index);
+          int comma = currentLine.indexOf(",");
+          String sentimentWord = currentLine.substring(0, comma);
+
+          if(sentimentWord.equals(currentword)){
+            sentimentValue += Double.parseDouble(currentLine.substring(comma + 1));
+          }
+        }
+      }
+  return sentimentValue;
+  }
+
+  //to define every instance on the line
+  public String toString() {
+    String text = "";
+
+    for (String value : textList) {
+      text = text + value + "\n";
+    }
+
+    return text;
+  }
+  
+ }
