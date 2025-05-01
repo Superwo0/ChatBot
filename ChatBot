@@ -1,0 +1,127 @@
+import java.util.ArrayList; //importing the ArrayList
+import java.util.Scanner;
+  /*
+  Main Chat Bot brain
+  */
+public class ChatBot {
+ 
+   private String name;//the name of the bot
+   private ArrayList<String> questions;//to access the questions text class
+   private ArrayList<String> responses;//to access the questions text class
+
+
+    public ChatBot(String name, String questionsFile, String responsesFile){
+      this.name = name;
+      this.questions = FileReader.toStringList(questionsFile);
+      this.responses = FileReader.toStringList(responsesFile);
+    }
+
+  //this is to get the questions from questions.txt
+  public String getQuestion() {
+    int randomIndex = (int)(Math.random() * questions.size());
+    return questions.get(randomIndex);
+  }
+
+  //this is to get the respones from responses.txt
+  public String getResponse() {
+    int randomIndex = (int)(Math.random() * responses.size());
+    return responses.get(randomIndex);
+  }
+  
+  
+  //this is the main chat method
+    public void chat() {
+      
+      Scanner scanner = new Scanner(System.in);//Initialize the Scanner
+      String user = "";//Initialize the user
+
+      //the name exchange
+      System.out.println("Hello my name is " + name + ". What is your name?");
+      user = scanner.nextLine();
+      System.out.println("Nice to meet you " + user + ".");
+
+      //Questions
+      System.out.println("how was your day?");
+      while(!user.equals("bye")){
+        user = scanner.nextLine();
+        System.out.println(getResponse());
+      //Gains the setimental vaule of the whole phrase
+        TextProcessor textprocessor = new TextProcessor("sentimentvalues.txt");
+      //System.out.println(textprocessor.getSentiment("nothing"));
+      //System.out.println(textprocessor.getSentiments(user));
+        double sentimentVaule = textprocessor.getSentiments(user);
+
+      switch (((int) sentimentVaule)) {
+        case -4:
+          System.out.println("Sorry to hear that");
+          System.out.println(getQuestion());
+          break;
+        case -3:
+          if(sentimentVaule > -2.5){
+            System.out.println("I hope it gets better");
+            System.out.println(getQuestion());
+          }
+          System.out.println("Ouch");
+          System.out.println(getQuestion());
+          break;
+        case -2:
+          if(sentimentVaule > -1.5){
+            System.out.println("Bummer");
+            System.out.println(getQuestion());
+          }
+          System.out.println("Sounds rough");
+          System.out.println(getQuestion());
+          break;
+        case -1:
+          if(sentimentVaule > -0.5){
+            System.out.println("Sure");
+            System.out.println(getQuestion());
+          }
+          System.out.println("Okay");
+          System.out.println(getQuestion());
+          break;
+        case 0:
+          if(sentimentVaule > 0.5){
+            System.out.println("What else");
+            System.out.println(getQuestion());
+          }
+          System.out.println("nice");
+          System.out.println(getQuestion());
+          break;
+        case 1:
+          if(sentimentVaule > 1.5){
+            System.out.println("Alright");
+            System.out.println(getQuestion());
+          }
+          System.out.println("Not to bad");
+          System.out.println(getQuestion());
+          break;
+        case 2:
+          if(sentimentVaule > 2.5){
+            System.out.println("Sounds nice");
+            System.out.println(getQuestion());
+          }
+          System.out.println("No way");
+          System.out.println(getQuestion());
+          break;
+        case 3:
+          if(sentimentVaule > 3.5){
+            System.out.println("Congrats");
+            System.out.println(getQuestion());
+          }
+          System.out.println("Sounds incredible");
+          System.out.println(getQuestion());
+          break;
+        case 4:
+          System.out.println("OMG");
+          System.out.println(getQuestion());
+          break;
+      }
+        user = scanner.nextLine();
+        if(user.equals("How was your day")||user.equals("hbu")||user.equals("How about you")){
+          System.out.println("Good. Thanks for asking");
+        }
+        
+    }
+    }
+}
